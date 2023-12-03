@@ -1,17 +1,40 @@
 ﻿@page "/day_1"
+@inject ILogger<Day_1> Logger
+
+@using Advent_of_Code.Data
+@inject Day1Service Day1Service
 
 <PageTitle>Day 1</PageTitle>
 
 <h1>Day 1</h1>
 
+Here is where the description of the task, once live will go.
 
-<InputFile class="form-control" multiple />
+Below is where you can upload the inputs.
+
+<EditForm Model="@Model" OnValidSubmit="@Submit" FormName="Day1Input">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputTextArea @bind-Value="Model!.PuzzleInput" style="width: 100%;"/>
+    <button type="submit">Submit</button>
+</EditForm>
+
+Your answer is:
+@AnswerText.ToString()
+
+
 
 @code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
+    public class PuzzleFormModel { public string? PuzzleInput { get; set; } }
+    public int? AnswerText = 0;
+
+    [SupplyParameterFromForm]
+    private PuzzleFormModel? Model { get; set; }
+    protected override void OnInitialized() => Model ??= new();
+
+    private void Submit()
     {
-        currentCount++;
+        AnswerText = Day1Service.SolveDay1Part1(Model?.PuzzleInput ?? "");
     }
 }
