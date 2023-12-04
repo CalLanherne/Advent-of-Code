@@ -12,7 +12,7 @@ Here is where the description of the task, once live will go.
 
 Below is where you can upload the inputs.
 
-Part 1:
+<h2>Part 1:</h2>
 <EditForm Model="@Model" OnValidSubmit="@SubmitPart1" FormName="Day1Input">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -21,9 +21,10 @@ Part 1:
 </EditForm>
 
 Your answer is:
-@AnswerText.ToString()
+@AnswerTextPart1.ToString()
 
-Part 2:
+<h2>Part 2:</h2>
+
 <EditForm Model="@Model" OnValidSubmit="@SubmitPart2" FormName="Day1Input">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -32,13 +33,14 @@ Part 2:
 </EditForm>
 
 Your answer is:
-@AnswerText.ToString()
+@AnswerTextPart2.ToString()
 
 
 @code {
 
     public class PuzzleFormModel { public string? PuzzleInputPart1 { get; set; } public string? PuzzleInputPart2 { get; set; } }
-    public int? AnswerText = 0;
+    public int? AnswerTextPart1 = 0;
+    public int? AnswerTextPart2 = 0;
 
     [SupplyParameterFromForm]
     private PuzzleFormModel? Model { get; set; }
@@ -46,11 +48,11 @@ Your answer is:
 
     private void SubmitPart1()
     {
-        AnswerText = Day1Service.SolveDay1Part1(Model?.PuzzleInputPart1 ?? "");
+        AnswerTextPart1 = Day1Service.SolveDay1Part1(Model?.PuzzleInputPart1 ?? "");
     }
 
     private void SubmitPart2()
     {
-        AnswerText = Day1Service.SolveDay1Part2(Model?.PuzzleInputPart2 ?? "");
+        AnswerTextPart2 = Day1Service.SolveDay1Part2(Model?.PuzzleInputPart2 ?? "");
     }
 }

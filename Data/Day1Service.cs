@@ -76,7 +76,7 @@ namespace Advent_of_Code.Data
 
 
             var firstDigitPattern = @"(one|two|three|four|five|six|seven|eight|nine|zero|\d)";
-            var lastDigitPattern = @"(\d|one|two|three|four|five|six|seven|eight|nine|zero)(?!.*(?:\d|one|two|three|four|five|six|seven|eight|nine|zero))";
+            var lastDigitPattern = @".*(\d|one|two|three|four|five|six|seven|eight|nine|zero)";
 
             var firstDigit = Regex.Match(input, firstDigitPattern).Groups[1].Value;
             var lastDigit = Regex.Match(input, lastDigitPattern).Groups[1].Value;
