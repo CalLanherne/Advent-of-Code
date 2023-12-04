@@ -4,6 +4,7 @@
 @using Advent_of_Code.Data
 @inject Day1Service Day1Service
 @inject Day2Service Day2Service
+@inject Day3Service Day3Service
 
 <PageTitle>Solve the puzzle!</PageTitle>
 
@@ -19,6 +20,7 @@ Choose your day, part and enter the puzzle input.
             <option value="">Select day ...</option>
             <option value=1>Day 1</option>
             <option value=2>Day 2</option>
+            <option value=3>Day 3</option>
         </InputSelect>
     </div>
     <div>
@@ -65,6 +67,10 @@ Your answer is:
         else if (Model?.DaySelect == 2)
         {
             AnswerText = Day2Service.SolveDay2(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+        }
+        else if (Model?.DaySelect == 3)
+        {
+            AnswerText = Day3Service.SolveDay3(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
         }
     }
 }

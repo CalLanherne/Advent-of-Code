@@ -10,6 +10,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<Day1Service>();
 builder.Services.AddSingleton<Day2Service>();
+builder.Services.AddSingleton<Day3Service>();
 //TODO: implement file upload and remove message size increase
 builder.Services.AddSignalR(o =>
 {
