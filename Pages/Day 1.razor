@@ -12,10 +12,22 @@ Here is where the description of the task, once live will go.
 
 Below is where you can upload the inputs.
 
-<EditForm Model="@Model" OnValidSubmit="@Submit" FormName="Day1Input">
+Part 1:
+<EditForm Model="@Model" OnValidSubmit="@SubmitPart1" FormName="Day1Input">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <InputTextArea @bind-Value="Model!.PuzzleInput" style="width: 100%;" />
+    <InputTextArea @bind-Value="Model!.PuzzleInputPart1" style="width: 100%;" />
+    <button type="submit">Submit</button>
+</EditForm>
+
+Your answer is:
+@AnswerText.ToString()
+
+Part 2:
+<EditForm Model="@Model" OnValidSubmit="@SubmitPart2" FormName="Day1Input">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputTextArea @bind-Value="Model!.PuzzleInputPart2" style="width: 100%;" />
     <button type="submit">Submit</button>
 </EditForm>
 
@@ -23,23 +35,22 @@ Your answer is:
 @AnswerText.ToString()
 
 
-
-
 @code {
 
-    public class PuzzleFormModel { public string? PuzzleInput { get; set; } }
+    public class PuzzleFormModel { public string? PuzzleInputPart1 { get; set; } public string? PuzzleInputPart2 { get; set; } }
     public int? AnswerText = 0;
 
     [SupplyParameterFromForm]
     private PuzzleFormModel? Model { get; set; }
     protected override void OnInitialized() => Model ??= new();
 
-    private void Submit()
+    private void SubmitPart1()
     {
-        Logger.LogInformation(
-            "{puzzle_info}",
-            Model?.PuzzleInput
-        );
-        AnswerText = Day1Service.SolveDay1Part1(Model?.PuzzleInput ?? "");
+        AnswerText = Day1Service.SolveDay1Part1(Model?.PuzzleInputPart1 ?? "");
+    }
+
+    private void SubmitPart2()
+    {
+        AnswerText = Day1Service.SolveDay1Part2(Model?.PuzzleInputPart2 ?? "");
     }
 }
