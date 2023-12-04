@@ -16,6 +16,11 @@ namespace Advent_of_Code.Data
         }
         private int ExtractFirstAndLastDigitsFromString(string input)
         {
+            if (input.Length == 0)
+            {
+                return 0;
+            }
+
             var firstDigitPattern = @"^[^\d]*(\d)";
             var lastDigitPattern = @"(\d)(?!.*\d)";
 

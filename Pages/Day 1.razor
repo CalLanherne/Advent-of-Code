@@ -15,12 +15,13 @@ Below is where you can upload the inputs.
 <EditForm Model="@Model" OnValidSubmit="@Submit" FormName="Day1Input">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <InputTextArea @bind-Value="Model!.PuzzleInput" style="width: 100%;"/>
+    <InputTextArea @bind-Value="Model!.PuzzleInput" style="width: 100%;" />
     <button type="submit">Submit</button>
 </EditForm>
 
 Your answer is:
 @AnswerText.ToString()
+
 
 
 
@@ -35,6 +36,10 @@ Your answer is:
 
     private void Submit()
     {
+        Logger.LogInformation(
+            "{puzzle_info}",
+            Model?.PuzzleInput
+        );
         AnswerText = Day1Service.SolveDay1Part1(Model?.PuzzleInput ?? "");
     }
 }
