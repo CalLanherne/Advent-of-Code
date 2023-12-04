@@ -1,0 +1,70 @@
+﻿@page "/solve"
+@inject ILogger<Solve> Logger
+
+@using Advent_of_Code.Data
+@inject Day1Service Day1Service
+@inject Day2Service Day2Service
+
+<PageTitle>Solve the puzzle!</PageTitle>
+
+<h1>Solve the puzzle!</h1>
+
+Choose your day, part and enter the puzzle input.
+
+<EditForm Model="@Model" OnValidSubmit="@Submit" FormName="Day1Input">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <InputSelect @bind-Value="Model!.DaySelect">
+            <option value="">Select day ...</option>
+            <option value=1>Day 1</option>
+            <option value=2>Day 2</option>
+        </InputSelect>
+    </div>
+    <div>
+        <InputSelect @bind-Value="Model!.PartSelect">
+            <option value="">Select part ...</option>
+            <option value=1>Part 1</option>
+            <option value=2>Part 2</option>
+        </InputSelect>
+    </div>
+    <div>
+        <InputTextArea @bind-Value="Model!.PuzzleInput" style="width: 100%;" />
+    </div>
+    
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+Your answer is:
+@AnswerText.ToString()
+
+
+@code {
+
+    public class PuzzleFormModel
+    {
+        public string? PuzzleInput { get; set; }
+        public int? PartSelect { get; set; }
+        public int? DaySelect { get; set; }
+
+    }
+    public int? AnswerText = 0;
+
+    [SupplyParameterFromForm]
+    private PuzzleFormModel? Model { get; set; }
+    protected override void OnInitialized() => Model ??= new();
+
+    private void Submit()
+    {
+        if (Model?.DaySelect == 1)
+        {
+            AnswerText = Day1Service.SolveDay1(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+        }
+        else if (Model?.DaySelect == 2)
+        {
+            AnswerText = Day2Service.SolveDay2(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+        }
+    }
+}

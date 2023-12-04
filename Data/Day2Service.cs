@@ -7,7 +7,15 @@ namespace Advent_of_Code.Data
 {
     public class Day2Service
     {
-        public int SolveDay2Part1(string input, int greenNumber, int blueNumber, int redNumber)
+        public int SolveDay2(string input, int part) =>
+            part switch
+            {
+                1 => SolveDay2Part1(input, 12, 13, 14),
+                2 => SolveDay2Part2(input),
+                _ => throw new ArgumentOutOfRangeException(nameof(part), $"Unsupported part number {part}"),
+            };
+
+        private int SolveDay2Part1(string input, int redNumber, int greenNumber, int blueNumber )
         {
             string[] games = input.Split("\n");
             var answer = 0;
@@ -22,25 +30,26 @@ namespace Advent_of_Code.Data
             }
             return answer;
         }
-        
-        private int MaxValueForColour(string game,string colour)
+
+        private int MaxValueForColour(string game, string colour)
         {
-            var pattern = string.Format(@"(\d+)(?: {0})" ,colour);
+            var pattern = string.Format(@"(\d+)(?: {0})", colour);
             var matches = Regex.Matches(game, pattern);
             List<int> values = new List<int>();
+            values.Add(0);
             foreach (Match match in matches)
             {
                 values.Add(Convert.ToInt32(match.Groups[1].Value));
             }
             return values.Max();
         }
-        public int SolveDay2Part2(string input)
+        private int SolveDay2Part2(string input)
         {
             var answer = 0;
             return answer;
         }
 
 
-        
+
     }
 }

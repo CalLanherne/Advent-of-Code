@@ -5,6 +5,14 @@ namespace Advent_of_Code.Data
 {
     public class Day1Service
     {
+        public int SolveDay1(string input, int part) =>
+            part switch
+            {
+                1 => SolveDay1Part1(input),
+                2 => SolveDay1Part2(input),
+                _ => throw new ArgumentOutOfRangeException(nameof(part), $"Unsupported part number {part}"),
+            };
+        
         public int SolveDay1Part1(string input)
         {
             string[] lines = input.Split("\n");
