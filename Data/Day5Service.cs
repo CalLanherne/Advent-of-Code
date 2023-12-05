@@ -24,7 +24,7 @@ namespace Advent_of_Code.Data
             seedLine.RemoveAt(0);
             var seeds = Array.ConvertAll(seedLine.ToArray(), long.Parse);
             List<long> seedDestination = new List<long>();
-            Dictionary<string, Dictionary<long, long>> allMapping = new Dictionary<string, Dictionary<long, long>>();
+            Dictionary<string, List<long[]>> allMapping = new Dictionary<string, List<long[]>>();
             for (var i = 1; i < blocks.Length; i++)            {
                 
                 var block = blocks[i];
@@ -32,21 +32,15 @@ namespace Advent_of_Code.Data
                 var header = lines[0].ToString();
                 lines.RemoveAt(0);
                 string[] dataString = lines.ToArray();
-                Dictionary<long, long> mapping = new Dictionary<long, long>();
+                List<long[]> rules = new List<long[]>();
                 foreach (var dataLine in dataString) 
                 {
                     var rangeData = Array.ConvertAll(whitespaceRegex.Split(dataLine), long.Parse);
-                    var sourceStart = rangeData[1];
-                    var destinationStart = rangeData[0];
-                    var count = rangeData[2];
-                    for(var j = 0;j < count; j++)
-                    {
-                        mapping.Add(sourceStart + j, destinationStart + j);                        
-                    }
+                    rules.Add(rangeData);
                 }
                 if (header != null)
                 {
-                    allMapping.Add(header, mapping);
+                    allMapping.Add(header, rules);
                 }                
             }
 
@@ -63,14 +57,16 @@ namespace Advent_of_Code.Data
             return answer;
         }
 
-        private long MapSourceDestination(long source, Dictionary<long, long> map)
+        private long MapSourceDestination(long source, List<long[]> rules)
         {
-            long destination;
-            if (!map.TryGetValue(source,out destination))
+            foreach (var rule in rules)
             {
-                destination = source;
+                if ( source >= rule[1] && source < rule[1] + rule[2])
+                {
+                    return rule[0] + source - rule[1];
+                }
             }
-            return destination;
+            return source;
         }
 
         private long SolveDay5Part2(string input)
