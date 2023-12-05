@@ -2,6 +2,7 @@
 @inject ILogger<Solve> Logger
 
 @using Advent_of_Code.Data
+@using System.ComponentModel.DataAnnotations
 @inject Day1Service Day1Service
 @inject Day2Service Day2Service
 @inject Day3Service Day3Service
@@ -49,10 +50,13 @@ Your answer is:
 
     public class PuzzleFormModel
     {
+        [Required]
         public string? PuzzleInput { get; set; }
+        [Required]
         public int? PartSelect { get; set; }
+        [Required]
         public int? DaySelect { get; set; }
-
+        
     }
     public int? AnswerText = 0;
 

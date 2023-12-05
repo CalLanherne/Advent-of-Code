@@ -46,7 +46,37 @@ namespace Advent_of_Code.Data
 
         private long SolveDay4Part2(string input)
         {
-            int answer = 0;
+            string[] cards = input.Split("\n");
+            long answer = 0;
+            Dictionary<int, Tuple<string[], string[]>> cardDictionary = new Dictionary<int, Tuple<string[], string[]>>();
+            List<int> countOfCards = new List<int>();
+
+            foreach (string card in cards)
+            {
+                var splitCard = card.Split('|');
+                var numberPattern = @"Card\s*(\d+):";
+                var valuesPattern = @"Card\s*\d+:\s*";
+                var regex = new Regex(@"\s+");
+
+                var winningNumbers = regex.Split(Regex.Replace(splitCard[0], valuesPattern, "").TrimEnd());
+                var playerNumbers = regex.Split(splitCard[1].Trim());
+
+                var match = Regex.Match(card, numberPattern);
+                var cardNumber = Convert.ToInt32(match.Groups[1].Value);
+                cardDictionary.Add(cardNumber, Tuple.Create(winningNumbers, playerNumbers));
+                countOfCards.Add(1);
+            }
+
+            foreach (var key in cardDictionary.Keys)
+            {
+                var intersection = cardDictionary[key].Item2.Intersect(cardDictionary[key].Item1);
+                var numberOfWinningNumbersInPlayerNumbers = intersection.Count();
+                for (var i = key; i <= key - 1 + numberOfWinningNumbersInPlayerNumbers; i++)
+                {
+                    countOfCards[i] += countOfCards[key - 1];
+                }
+                answer += countOfCards[key-1];
+            }
             return answer;
         }
     }
