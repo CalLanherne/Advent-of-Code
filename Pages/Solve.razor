@@ -7,6 +7,7 @@
 @inject Day2Service Day2Service
 @inject Day3Service Day3Service
 @inject Day4Service Day4Service
+@inject Day5Service Day5Service
 
 <PageTitle>Solve the puzzle!</PageTitle>
 
@@ -24,6 +25,7 @@ Choose your day, part and enter the puzzle input.
             <option value=2>Day 2</option>
             <option value=3>Day 3</option>
             <option value=4>Day 4</option>
+            <option value=5>Day 5</option>
         </InputSelect>
     </div>
     <div>
@@ -58,7 +60,7 @@ Your answer is:
         public int? DaySelect { get; set; }
         
     }
-    public int? AnswerText = 0;
+    public long? AnswerText = 0;
 
     [SupplyParameterFromForm]
     private PuzzleFormModel? Model { get; set; }
@@ -68,19 +70,23 @@ Your answer is:
     {
         if (Model?.DaySelect == 1)
         {
-            AnswerText = Day1Service.SolveDay1(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+            AnswerText = (long) Day1Service.SolveDay1(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
         }
         else if (Model?.DaySelect == 2)
         {
-            AnswerText = Day2Service.SolveDay2(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+            AnswerText = (long) Day2Service.SolveDay2(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
         }
         else if (Model?.DaySelect == 3)
         {
-            AnswerText = Day3Service.SolveDay3(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+            AnswerText = (long) Day3Service.SolveDay3(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
         }
         else if (Model?.DaySelect == 4)
         {
-            AnswerText = (int) Day4Service.SolveDay4(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+            AnswerText = Day4Service.SolveDay4(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
+        }
+        else if (Model?.DaySelect == 5)
+        {
+            AnswerText = Day5Service.SolveDay5(Model?.PuzzleInput ?? "", Model?.PartSelect ?? 0);
         }
     }
 }
