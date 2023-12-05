@@ -18,22 +18,33 @@ namespace Advent_of_Code.Data
 
         private int SolveDay3Part1(string input)
         {
+            int answer = 0;
             var span = FindSpan(input);
             string inputLinear = input.Replace("\n", "");
-            FindNumbers(inputLinear);
-            var answer = 0;
-            //foreach ( var line in lines ) 
-            //{
-            //    FindNonDigitNonPeriod(line);
-            //}
+            var numbers = FindNumbers(inputLinear);
+            var symbols = FindNonDigitNonPeriods(inputLinear);
+            foreach (var number in numbers)
+            {
+                var indices = FindAdjacentIndices(number.Item1, number.Item2, span);
+                var intersection = indices.Intersect(symbols).ToArray();
+                if (intersection.Length > 0)
+                {
+                    answer += number.Item3;
+                }
+            }
             return answer;
         }
-        private int FindNonDigitNonPeriod(string line)
+
+        private List<int> FindNonDigitNonPeriods(string input)
         {
             var pattern = @"((?!(\.|\d)).)";
-            var match = Regex.Match(line, pattern);
-
-            return 0;
+            var matches = Regex.Matches(input, pattern);
+            List<int> positions = new List<int>();
+            foreach (Match match in matches)
+            {
+                positions.Add(match.Index);
+            }
+            return positions;
         }
 
         private int FindSpan(string input)
@@ -47,13 +58,28 @@ namespace Advent_of_Code.Data
             return i;
         }
 
-        private int FindAdjacentIndices(int start, int stop, int span)
+        private List<int> FindAdjacentIndices(int start, int stop, int span)
         {
-            //build in modular arithmetic
-            var previousLineStart = start - span - 1;
-            var previousLineStope = stop - span + 1;
-            var nextLineStart = start + span - 1;
-            return 0;
+            
+            var startOfLine = start % span == 0;
+            var endOfLine = (stop + 1) % span == 0;
+
+            var previousLineStart = Math.Max(0, startOfLine ? start - span : start - span - 1);
+            var previousLineStop = Math.Max(0, endOfLine ? stop - span : stop - span + 1);
+            var nextLineStart = startOfLine ? start + span : start + span - 1;
+            var nextLineStop = endOfLine ? stop + span : stop + span + 1;
+
+            List<int> indices = Enumerable.Range(previousLineStart, previousLineStop - previousLineStart + 1).ToList();
+            indices.AddRange(Enumerable.Range(nextLineStart, nextLineStop - nextLineStart + 1).ToList());
+            if (!startOfLine)
+            {
+                indices.Add(start - 1);
+            }
+            if (!endOfLine)
+            {
+                indices.Add(stop + 1);
+            }
+            return indices;
         }
         private List<Tuple<int, int, int>> FindNumbers(string input)
         {
@@ -63,7 +89,7 @@ namespace Advent_of_Code.Data
             List<Tuple<int, int, int>> positions = new List<Tuple<int, int, int>>();
             foreach (Match match in matches)
             {
-                positions.Add(Tuple.Create(match.Index, match.Index + match.Value.Length, Convert.ToInt32(match.Value)));
+                positions.Add(Tuple.Create(match.Index, match.Index + match.Value.Length - 1, Convert.ToInt32(match.Value)));
             }
             return positions;
         }
