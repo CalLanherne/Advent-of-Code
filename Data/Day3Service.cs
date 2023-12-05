@@ -47,6 +47,18 @@ namespace Advent_of_Code.Data
             return positions;
         }
 
+        private List<int> FindAsterisk(string input)
+        {
+            var pattern = @"(*)";
+            var matches = Regex.Matches(input, pattern);
+            List<int> positions = new List<int>();
+            foreach (Match match in matches)
+            {
+                positions.Add(match.Index);
+            }
+            return positions;
+        }
+
         private int FindSpan(string input)
         {
             char[] inputArray = input.ToCharArray();
@@ -96,8 +108,32 @@ namespace Advent_of_Code.Data
 
         private int SolveDay3Part2(string input)
         {
-            string[] games = input.Split("\n");
-            var answer = 0;
+            int answer = 0;
+            var span = FindSpan(input);
+            string inputLinear = input.Replace("\n", "");
+            var numbers = FindNumbers(inputLinear);
+            var symbols = FindNonDigitNonPeriods(inputLinear);
+            Dictionary<int, List<int>> register = new Dictionary<int, List<int>>();
+            foreach (var symbol in symbols)
+            {
+                register.Add(symbol,new List<int>());
+            }
+            foreach (var number in numbers)
+            {
+                var indices = FindAdjacentIndices(number.Item1, number.Item2, span);
+                var intersection = indices.Intersect(symbols).ToArray();
+                foreach (var intersection_index in intersection)
+                {
+                    register[intersection_index].Add(number.Item3);
+                }
+            }
+
+            foreach (var symbol in symbols)
+            {
+                if (register[symbol].ToArray().Length == 2) {
+                    answer += register[symbol][0] * register[symbol][1];
+                }
+            }
             return answer;
         }
     }
